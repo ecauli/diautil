@@ -42,9 +42,11 @@ var holiday = function(h){
   }
   return false;
 }
+//15/11/2015
 var diautil = function(d,n){
-    var c = d.split("-");
-	return getWorkDay(c[0],c[1],c[2],n);
+    var c = d.split("/");
+    var r = getWorkDay(c[2],c[1],c[0],n).split("-");
+    return  r[2]+"/"+r[1]+"/"+r[0];
 }
 
-//console.log(diautil("2015-12-23",2));
+//console.log(diautil("23/11//2015",2));

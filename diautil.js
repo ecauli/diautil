@@ -42,5 +42,9 @@ var holiday = function(h){
   }
   return false;
 }
+var diautil = function(d,n){
+    var c = d.split("-");
+	return getWorkDay(c[0],c[1],c[2],n);
+}
 
-//console.log(getWorkDay(2015,12,23,2));
+//console.log(diautil("2015-12-23",2));

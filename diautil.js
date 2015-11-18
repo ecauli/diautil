@@ -11,58 +11,36 @@ holidays["2023"]=["2023-01-01","2023-01-25","2023-02-20","2023-02-21","2023-04-0
 holidays["2024"]=["2024-01-01","2024-01-25","2024-02-12","2024-02-13","2024-03-29","2024-04-21","2024-05-01","2024-05-30","2024-07-09","2024-09-07","2024-10-12","2024-11-02","2024-11-15","2024-11-20","2024-12-24","2024-12-25","2024-12-31"];
 holidays["2025"]=["2025-01-01","2025-01-25","2025-03-03","2025-03-04","2025-04-18","2025-04-21","2025-05-01","2025-06-19","2025-07-09","2025-09-07","2025-10-12","2025-11-02","2025-11-15","2025-11-20","2025-12-24","2025-12-25","2025-12-31"];
 
-Date.prototype.addDays = function(days)
-{
-    var dat = new Date(this.valueOf());
-    dat.setDate(dat.getDate() + days);
-    return dat;
+var increment = function(d){
+ d.setDate(d.getDate() + 1);
+    return d;
 }
-
-
-/* getDay() : return the the workday date X days after some date provided
-params:
-date: string - start date
-n: number of workdays after date.
-return string : the the workday date.
-*/
-var getWorkDay = function(date, n){
-  var start = new Date(date);
-  var current;
+var getWorkDay = function(year,month,day, n){
+  var wd = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
   var i = 1;
-  var j= 1
-  while(i<=n){
-    current = start.addDays(j);
-    console.log("status:i="+i+":j="+j+":",current);
-    if(!( holiday(current) || weekend(current) )) 	{
-        i++;
-    	console.log("dia incluido",current);
-    }
-    j++;
+  while(i < (n+1)){
+    wd = increment(wd)
+    if(!( holiday(wd) || weekend(wd) )) i++;
   }
-  return current;
+  return wd.getUTCFullYear() + "-" + (wd.getUTCMonth() + 1) + "-" + wd.getUTCDate();
 }
 
-var weekend = function(date){
-  var w = date.getDay();
-    
- console.log("w",w);
-  if((w==7) || (w==1)) {
-      console.log("fds",date);
+var weekend = function(wd){
+  var d = wd;
+  var w = d.getUTCDay();
+  if((w==6) || (w==0)) {
       return true;
   }
   return false;
 }
 
-var holiday = function(date){
-  console.log("date:"+date);  
-  var list = holidays[date.getFullYear()];
-  var text = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-  console.log("text:"+text);
+var holiday = function(h){
+  var list = holidays[h.getUTCFullYear()];
+  var text = h.getUTCFullYear() + "-" + (h.getUTCMonth() + 1) + "-" + h.getUTCDate();
   if(list.indexOf(text) > -1){
-      console.log("holiday!");
       return true;
   }
   return false;
 }
 
-console.log(getWorkDay("2015-11-17",3));
+//console.log(getWorkDay(2015,12,23,2));

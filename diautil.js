@@ -50,3 +50,7 @@ var diautil = function(d,n){
 }
 
 //console.log(diautil("23/11//2015",2));
+var dateutil = function(d,n){
+    var r = getWorkDay(c.getFullYear(),c.getMonth(),c.getDate(),n);
+    return new Date(r);
+}
